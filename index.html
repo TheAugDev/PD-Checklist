@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Police Duty Checklist & Field Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .checklist-item.checked label {
+            text-decoration: line-through;
+            color: #6b7280;
+        }
+        .checklist-item.checked .checkbox-icon {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+        }
+        .checklist-item.checked .checkbox-icon i {
+            opacity: 1;
+        }
+        .checkbox-icon {
+            border: 2px solid #9ca3af;
+            color: white;
+        }
+        .checkbox-icon i {
+            opacity: 0;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        .guide-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 0.75rem;
+            margin-bottom: 0.25rem;
+            color: #93c5fd;
+        }
+         .guide-content ul, .guide-content ol {
+            list-style-position: inside;
+            margin-bottom: 0.5rem;
+        }
+        .guide-content ul {
+            list-style-type: disc;
+        }
+        .guide-content ol {
+            list-style-type: decimal;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="container mx-auto p-4 max-w-4xl">
+        <header class="text-center mb-6">
+            <h1 class="text-3xl font-bold text-blue-400">Denton PD Duty Checklist & Field Guide</h1>
+            <p class="text-gray-400 mt-1">Stay Prepared and Informed</p>
+        </header>
+
+        <!-- Tabs -->
+        <div class="mb-4 border-b border-gray-700">
+            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" role="tablist">
+                <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="checklist-tab" type="button" role="tab" aria-controls="checklist" aria-selected="true">
+                        <i class="fas fa-clipboard-list mr-2"></i>Pre-Duty Checklist
+                    </button>
+                </li>
+                <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="guide-tab" type="button" role="tab" aria-controls="guide" aria-selected="false">
+                        <i class="fas fa-book mr-2"></i>Field Guide
+                    </button>
+                </li>
+                <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="procedures-tab" type="button" role="tab" aria-controls="procedures" aria-selected="false">
+                        <i class="fas fa-tasks mr-2"></i>Procedures
+                    </button>
+                </li>
+                 <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="cues-tab" type="button" role="tab" aria-controls="cues" aria-selected="false">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Response Cues
+                    </button>
+                </li>
+                <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="commands-tab" type="button" role="tab" aria-controls="commands" aria-selected="false">
+                        <i class="fas fa-bullhorn mr-2"></i>Verbal Commands
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="tabContent">
+            <!-- Checklist Section -->
+            <div id="checklist" role="tabpanel" aria-labelledby="checklist-tab">
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-blue-300">Pre-Duty Checklist</h2>
+                        <button id="resetChecklist" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors">
+                            <i class="fas fa-sync-alt mr-2"></i>Reset
+                        </button>
+                    </div>
+                    <div id="checklist-container" class="space-y-4">
+                        <!-- Checklist categories will be injected here by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Field Guide Section -->
+            <div id="guide" role="tabpanel" aria-labelledby="guide-tab" class="hidden">
+                 <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-blue-300 mb-4">Field Guide Reference</h2>
+                    <div class="relative mb-4">
+                        <input type="text" id="searchGuide" class="w-full bg-gray-700 border border-gray-600 text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 pl-10" placeholder="Search guide...">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div id="guide-container" class="space-y-2">
+                        <!-- Guide content will be injected here by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Procedures Section -->
+            <div id="procedures" role="tabpanel" aria-labelledby="procedures-tab" class="hidden">
+                 <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-blue-300 mb-4">Call Procedures</h2>
+                     <div class="relative mb-4">
+                        <input type="text" id="searchProcedures" class="w-full bg-gray-700 border border-gray-600 text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 pl-10" placeholder="Search procedures...">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div id="procedures-container" class="space-y-2">
+                        <!-- Procedure content will be injected here by JS -->
+                    </div>
+                </div>
+            </div>
+
+             <!-- Cues Section -->
+            <div id="cues" role="tabpanel" aria-labelledby="cues-tab" class="hidden">
+                 <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-blue-300 mb-4">Response to Resistance Cues & Options</h2>
+                     <div class="relative mb-4">
+                        <input type="text" id="searchCues" class="w-full bg-gray-700 border border-gray-600 text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 pl-10" placeholder="Search cues...">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div id="cues-container" class="space-y-2">
+                        <!-- Cues content will be injected here by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verbal Commands Section -->
+            <div id="commands" role="tabpanel" aria-labelledby="commands-tab" class="hidden">
+                 <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-blue-300 mb-4">Verbal Commands & Scripts</h2>
+                     <div class="relative mb-4">
+                        <input type="text" id="searchCommands" class="w-full bg-gray-700 border border-gray-600 text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 pl-10" placeholder="Search commands...">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div id="commands-container" class="space-y-2">
+                        <!-- Commands content will be injected here by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+         <footer class="text-center mt-8 text-gray-500 text-xs">
+            <p>This tool is for informational purposes and as a personal aid. Always refer to official Denton PD General Orders and training for operational guidance.</p>
+            <p>&copy; 2025. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DATA ---
+            const checklistData = {
+                "Uniform & Equipment": [
+                    "Full Uniform (clean, pressed)", "Body Armor (checked)", "Duty Belt (all gear present)", "Handgun (loaded, checked)", "Magazines (fully loaded)", "Handcuffs (with key)", "Baton", "OC Spray / Taser", "Radio (charged, checked)", "Body Camera (charged, checked)", "Flashlight (checked)", "Gloves", "Duty Knife", "Pen & Notebook"
+                ],
+                "Vehicle Inspection": [
+                    "Exterior walk-around (damage, tires)", "Emergency lights & siren check", "Radio check", "MDC/Computer login", "Search vehicle interior (backseat, trunk)", "Check equipment (first aid, fire ext.)", "Fuel level (at least 3/4 full)"
+                ],
+                "Mental & Personal Prep": [
+                    "Review recent bulletins/BOLO's", "Confirm shift assignment/partner", "Personal phone silenced/off", "Wallet & ID", "Hydration & Nutrition packed", "Moment of mental focus/readiness"
+                ]
+            };
+
+            const guideData = [
+                {
+                    title: "Use of Force (GO 300 Summary)",
+                    content: `
+                        <p>The standard is <strong class="text-yellow-300 font-semibold">objectively reasonable</strong> force necessary to accomplish a legitimate law enforcement purpose. Judged from the perspective of a reasonable officer on the scene, without 20/20 hindsight.</p>
+                        <h4>De-Escalation (GO 300.3)</h4>
+                        <ul>
+                            <li>De-escalation is the <span class="text-cyan-300">preferred, tactically sound approach</span> when safe and reasonable.</li>
+                            <li>Techniques include: using distance/cover, tactical repositioning, verbal persuasion, and summoning additional resources.</li>
+                            <li>Officers <span class="text-red-400 font-semibold">must use de-escalation techniques</span> when feasible to gain voluntary compliance.</li>
+                        </ul>
+                        <h4>Factors for Reasonableness (GO 300.5.2)</h4>
+                        <ul>
+                            <li>Immediacy and severity of the threat.</li>
+                            <li>Severity of the suspected offense.</li>
+                            <li>Whether the individual is actively resisting or attempting to evade.</li>
+                            <li>Conduct of the individual being confronted.</li>
+                            <li>Officer/subject factors (size, skill, exhaustion, etc.).</li>
+                            <li>Availability of other reasonable options.</li>
+                        </ul>
+                        <h4>Lethal Force (GO 300.6)</h4>
+                        <ul>
+                            <li>Justified to protect self or others from what is reasonably believed to be an <strong class="text-yellow-300 font-semibold">imminent threat of death or serious bodily injury</strong>.</li>
+                            <li>To stop a fleeing felon who has committed/intends to commit a felony involving infliction of SBI or death, AND there is an imminent risk to others if not immediately apprehended.</li>
+                            <li><span class="text-cyan-300">Verbal warning</span> should precede use of lethal force, where feasible.</li>
+                        </ul>
+                        <h4>Duty to Intervene (GO 300.2.1)</h4>
+                        <p>All officers have a <span class="text-red-400 font-semibold">duty to intervene</span> to prevent another officer's use of unreasonable force and <span class="text-red-400 font-semibold">must report</span> such observations to a supervisor.</p>
+                        <h4>Medical Considerations (GO 300.8)</h4>
+                        <p><span class="text-cyan-300">Promptly request medical assistance</span> after a force incident. Monitor individuals for physical distress, especially those exhibiting signs of excited delirium.</p>
+                        <h4>Examples in Practice</h4>
+                        <ul>
+                            <li><strong>De-escalation:</strong> A subject is verbally non-compliant and agitated but is not armed and has not made physical threats. Instead of immediately moving to physical control, you <span class="text-cyan-300">maintain a safe distance</span>, use a calm tone, and ask open-ended questions to understand the issue, giving them time to comply.</li>
+                            <li><strong>Reasonableness:</strong> You confront a suspect who just committed an armed robbery. The suspect refuses commands and reaches for their waistband. Your decision to draw your firearm is based on the <span class="text-yellow-300 font-semibold">totality of the circumstances</span>: the severity of the crime (violent felony) and the suspect's actions posing an imminent threat.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Denton PD Firearms Principles",
+                    content: `
+                        <h4>General Firearms Safety</h4>
+                        <ul>
+                            <li class="text-red-400 font-semibold">All guns are always loaded.</li>
+                            <li class="text-red-400 font-semibold">Never let the muzzle of the weapon cover anything you are not willing to destroy.</li>
+                            <li class="text-red-400 font-semibold">Keep your finger OFF the trigger and OUTSIDE the trigger guard until the muzzle is aligned with the target and you are ready to fire.</li>
+                            <li class="text-red-400 font-semibold">Be sure of your target and beyond.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Firearm Safety Rules (GO 305)",
+                    content: `
+                        <ul>
+                            <li>Members shall maintain the highest level of safety when handling firearms.</li>
+                            <li>Do not unnecessarily display or handle any firearm.</li>
+                            <li>Do not clean, repair, load or unload a firearm anywhere in the Department, except in designated areas.</li>
+                            <li>Rifles removed from vehicles shall be loaded and unloaded in designated areas outside the vehicle.</li>
+                            <li>Do not place or store any firearm on department premises except where the place of storage is locked.</li>
+                            <li>Firearms <span class="text-red-400 font-semibold">shall not</span> be carried by any member who has consumed alcohol or taken drugs/medication that would adversely affect senses or judgment.</li>
+                            <li>Warning shots are <span class="text-red-400 font-semibold">prohibited</span>.</li>
+                            <li>Firearms may be readied for use when anticipated, but not displayed in a threatening manner unless objectively reasonable.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Arrest Powers (GO 100.3)",
+                    content: `
+                        <h4>Warrantless Arrest Authority (Within Jurisdiction - GO 100.3.1)</h4>
+                        <p>An officer may arrest without a warrant for:</p>
+                        <ol class="list-decimal list-inside space-y-2">
+                            <li><strong>Offense in Presence/View:</strong> For any offense committed in the officer's presence or view (CCP 14.01).</li>
+                            <li><strong>Magistrate's Order:</strong> When ordered by a magistrate for a felony or breach-of-the-peace observed by the magistrate (CCP 14.02).</li>
+                            <li><strong>Suspicious Places/Circumstances:</strong> For felonies, breach of peace, public intoxication, disorderly conduct, or threats of an offense (CCP 14.03).</li>
+                            <li><strong>Assault w/ Bodily Injury:</strong> <span class="text-yellow-300 font-semibold">PC</span> to believe an assault with bodily injury occurred and further injury is possible (CCP 14.03).</li>
+                            <li><strong>Protective Order Violation:</strong> <span class="text-yellow-300 font-semibold">PC</span> to believe a violation of certain court orders (family violence, sexual assault, stalking, etc.) has occurred (CCP 14.03).</li>
+                            <li><strong>Family Violence:</strong> <span class="text-yellow-300 font-semibold">PC</span> to believe an offense involving family violence has occurred (CCP 14.03).</li>
+                            <li><strong>Interference with Emergency Call:</strong> <span class="text-yellow-300 font-semibold">PC</span> to believe a person prevented/interfered with an emergency call (CCP 14.03).</li>
+                            <li><strong>Admissible Statement (Felony):</strong> When a person's admissible statement establishes <span class="text-yellow-300 font-semibold">PC</span> they committed a felony (CCP 14.03).</li>
+                            <li><strong>Felony & Escape:</strong> When a credible person provides info that a felony was committed and the offender is about to escape (CCP 14.04).</li>
+                            <li><strong>Stolen Property:</strong> Reasonable grounds to believe a person possesses stolen property (CCP 18.16).</li>
+                            <li><strong>Traffic Offense:</strong> For a traffic offense observed under Subtitle C, Texas Transportation Code (Transp. Code 543.001).</li>
+                        </ol>
+                        <h4>Outside Denton PD Jurisdiction (GO 100.3.2)</h4>
+                        <p>An officer may arrest without a warrant for:</p>
+                        <ul>
+                            <li>Any offense (except most traffic offenses) committed in the officer's presence or view anywhere in Texas.</li>
+                            <li>When in <span class="text-cyan-300">fresh pursuit</span> of a person who committed an offense within the officer's jurisdiction.</li>
+                        </ul>
+                    `
+                },
+                 {
+                    title: "Vehicle Pursuits (GO 306)",
+                    content: `
+                        <h4>When to Initiate</h4>
+                        <ul>
+                            <li>When a suspect is attempting to evade arrest or detention.</li>
+                            <li><span class="text-cyan-300">Must balance</span> the seriousness of the crime against the risks to the public and officers.</li>
+                            <li>Consider traffic, weather, road conditions, and familiarity with the area.</li>
+                            <li><strong class="text-red-400 font-semibold">Prohibited from pursuing for traffic offenses alone.</strong></li>
+                        </ul>
+                        <h4>When to Terminate</h4>
+                        <ul>
+                            <li>When the <span class="text-yellow-300 font-semibold">risks of continuing outweigh the risks</span> of the suspect's escape.</li>
+                            <li>When ordered by a supervisor.</li>
+                            <li>If the pursued vehicle's location is no longer known.</li>
+                            <li>If the pursuing vehicle has a mechanical failure or inoperable emergency equipment.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Foot Pursuits (GO 307)",
+                    content: `
+                        <h4>Primary Consideration</h4>
+                        <p>The <span class="text-yellow-300 font-semibold">safety</span> of department members, the public, and the suspect is paramount.</p>
+                        <h4>Officer Responsibilities</h4>
+                        <ul>
+                            <li><span class="text-cyan-300">Broadcast</span> location, direction, reason, description, and if armed.</li>
+                            <li>When alone, <span class="text-cyan-300">keep suspect in sight and coordinate containment</span> rather than immediately confronting.</li>
+                        </ul>
+                        <h4>Consider Terminating When:</h4>
+                        <ul>
+                            <li>Officer is acting alone.</li>
+                            <li>Officers become separated or lose visual/radio contact.</li>
+                            <li>Suspect enters a building or confined space without sufficient backup.</li>
+                            <li>The danger to officers or the public outweighs the need for immediate apprehension.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Officer Response to Calls (GO 308)",
+                    content: `
+                        <ul>
+                            <li><strong>Code 3 (Emergency):</strong> Lights and siren activated. For pursuits, emergencies with possible injury/death, or immediate officer assistance. <span class="text-red-400 font-semibold">Must drive with due regard for safety.</span></li>
+                            <li><strong>Code 2 (Limited Emergency):</strong> Emergency lights activated, no siren. <span class="text-red-400 font-semibold">Must obey all traffic laws.</span></li>
+                            <li><strong>Code 1 (Routine):</strong> Normal operation, no lights or siren. <span class="text-red-400 font-semibold">Must obey all traffic laws.</span></li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Crisis Intervention / Mental Health (GO 512)",
+                    content: `
+                        <h4>Goal: De-escalate Safely</h4>
+                        <ul>
+                            <li>Recognize atypical behavior, but do not diagnose.</li>
+                            <li><span class="text-cyan-300">Request backup and specialized resources (CIRT).</span></li>
+                            <li>If feasible and safe, turn off flashing lights/sirens.</li>
+                            <li><span class="text-cyan-300">Create distance and use active listening skills.</span></li>
+                            <li>Be patient, calm, and non-threatening. Avoid arguing or cornering the individual.</li>
+                            <li>Consider that taking no action or passively monitoring may be the most reasonable response.</li>
+                        </ul>
+                        <h4>Examples in Practice</h4>
+                        <ul>
+                            <li>On a welfare check, you find a person speaking incoherently and who appears disoriented. Instead of shouting commands, you introduce yourself, ask for their name, and say, "It seems like you're having a tough time. I'm here to help. Can you tell me what's going on?" You then <span class="text-cyan-300">request a CIRT unit</span> to respond.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Family Violence Response (GO 901)",
+                    content: `
+                        <ul>
+                            <li>Considered a high-priority call. A minimum of two officers should be dispatched.</li>
+                            <li><span class="text-cyan-300">Immediately take control</span> by separating individuals and controlling access to weapons.</li>
+                            <li>An arrest <strong class="text-red-400 font-semibold">should be made</strong> when there is probable cause to believe a family violence offense has occurred, even if not in the officer's presence.</li>
+                            <li>A victim's request not to arrest is not a sole justification for inaction.</li>
+                            <li>Provide the victim with the department's family violence information handout and resources.</li>
+                            <li>If strangulation is reported or suspected, a medic <strong class="text-red-400 font-semibold">shall</strong> be requested.</li>
+                        </ul>
+                        <h4>Examples in Practice</h4>
+                        <ul>
+                            <li>At a disturbance, both parties have minor scratches. The wife says the husband pushed her first, and she scratched him to get away. The husband claims she started it. The primary aggressor is determined to be the husband based on his initial act of pushing. Even if the wife asks you not to, an <span class="text-red-400 font-semibold">arrest should be made</span> based on the probable cause for the initial assault.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Public Recording of Law Enforcement (GO 516)",
+                    content: `
+                        <ul>
+                            <li>The public has a right to record officers performing official duties from any public place or private property where they have a legal right to be.</li>
+                            <li>Individuals <span class="text-red-400 font-semibold">may not interfere</span> with law enforcement activity (e.g., tampering with witnesses, creating a safety hazard).</li>
+                            <li><span class="text-red-400 font-semibold">Do not seize recording devices</span> unless you have PC to believe the recording is evidence of a crime committed by the person recording, to prevent serious bodily injury/death, or with consent. A warrant is preferred.</li>
+                            <li>Request a supervisor if issues arise.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Key Definitions (GO 103.4)",
+                    content: `
+                        <h4>Probable Cause</h4>
+                        <p>Exists to arrest where the police have <span class="text-yellow-300 font-semibold">reasonably trustworthy information</span>, considered as a whole, sufficient to warrant a reasonable person to believe a particular person has committed or is committing an offense. (Guzman v State, 955 S.W.2d 85, 87 (Tex. Crim. App.1997)).</p>
+                        <p>Probable cause exists for a search when <span class="text-yellow-300 font-semibold">reasonably trustworthy facts and circumstances</span> within the knowledge of the officer on the scene would lead a person of reasonable prudence to believe that the instrumentality or evidence of a crime will be found. (Gutierrez v. State, 221 S.W.3d 680 (Tex.Crim.App.2007)).</p>
+                        <h4>Reasonable Suspicion</h4>
+                        <p><span class="text-yellow-300 font-semibold">Specific, articulable facts</span> that, combined with rational inferences from those facts, would lead the officer to reasonably conclude that the person detained is, has been, or soon will be engaged in criminal activity. (York v. State, 342 S.W.3d 528 (Tex. Crim. App.2000)).</p>
+                    `
+                },
+                {
+                    title: "Search & Seizure (GO 504)",
+                    content: `
+                        <p>Members will conduct searches in strict observance of constitutional rights. A valid warrant is generally required, but exceptions exist.</p>
+                        <h4>Warrant Exceptions Include:</h4>
+                        <ul>
+                            <li><strong class="text-cyan-300">Consent:</strong> Must be valid and voluntary. Document on BWC and/or consent form.</li>
+                            <li><strong class="text-cyan-300">Incident to Lawful Arrest:</strong> Search of the person and the area within their immediate control.</li>
+                            <li><strong class="text-cyan-300">Community Caretaking:</strong> Legitimate actions to protect public safety.</li>
+                            <li><strong class="text-cyan-300">Vehicle Searches:</strong> Based on probable cause that the vehicle contains evidence of a crime (Carroll Doctrine).</li>
+                            <li><strong class="text-cyan-300">Exigent Circumstances:</strong> Situations where evidence may be destroyed or someone's life is in danger.</li>
+                        </ul>
+                        <h4>Search Protocol:</h4>
+                        <ul>
+                            <li>Conduct searches with dignity and courtesy.</li>
+                            <li>Explain the reason for the search.</li>
+                            <li>Minimize damage to property.</li>
+                            <li>Whenever practicable, a search should not be conducted by a lone officer.</li>
+                        </ul>
+                        <h4>Examples in Practice</h4>
+                        <ul>
+                            <li>During a traffic stop, you develop reasonable suspicion of drug activity but lack probable cause to search the vehicle. You ask the driver, "Do you have anything illegal in your car? Would you mind if I take a look inside?" You clearly state it's their choice and they can refuse. You <span class="text-cyan-300">document their verbal consent on your BWC</span> before starting the search.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "General LE Knowledge",
+                    content: `
+                        <h4>Radio Codes (Common)</h4>
+                        <ul>
+                            <li><strong>10-4:</strong> Acknowledged</li>
+                            <li><strong>10-7:</strong> Out of Service</li>
+                            <li><strong>10-8:</strong> In Service</li>
+                            <li><strong>10-9:</strong> Repeat</li>
+                            <li><strong>10-15:</strong> Prisoner in Custody</li>
+                            <li><strong>10-19:</strong> Return to Station</li>
+                            <li><strong>10-20:</strong> Location</li>
+                            <li><strong>10-22:</strong> Disregard</li>
+                            <li><strong>10-27:</strong> Driver's License Check</li>
+                            <li><strong>10-28:</strong> Vehicle Registration Check</li>
+                            <li><strong>10-29:</strong> Warrants Check</li>
+                            <li><strong>10-33:</strong> Emergency Traffic</li>
+                            <li><strong>10-50:</strong> Traffic Collision</li>
+                            <li><strong>10-97:</strong> Arrived on Scene</li>
+                            <li><strong>10-98:</strong> Assignment Completed</li>
+                        </ul>
+                        <h4>Phonetic Alphabet (Law Enforcement)</h4>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            <span><strong>A</strong> - Adam</span> <span><strong>B</strong> - Boy</span> <span><strong>C</strong> - Charles</span>
+                            <span><strong>D</strong> - David</span> <span><strong>E</strong> - Edward</span> <span><strong>F</strong> - Frank</span>
+                            <span><strong>G</strong> - George</span> <span><strong>H</strong> - Henry</span> <span><strong>I</strong> - Ida</span>
+                            <span><strong>J</strong> - John</span> <span><strong>K</strong> - King</span> <span><strong>L</strong> - Lincoln</span>
+                            <span><strong>M</strong> - Mary</span> <span><strong>N</strong> - Nora</span> <span><strong>O</strong> - Ocean</span>
+                            <span><strong>P</strong> - Paul</span> <span><strong>Q</strong> - Queen</span> <span><strong>R</strong> - Robert</span>
+                            <span><strong>S</strong> - Sam</span> <span><strong>T</strong> - Tom</span> <span><strong>U</strong> - Union</span>
+                            <span><strong>V</strong> - Victor</span> <span><strong>W</strong> - William</span> <span><strong>X</strong> - X-ray</span>
+                            <span><strong>Y</strong> - Young</span> <span><strong>Z</strong> - Zebra</span>
+                        </div>
+                        <h4>Miranda Warning</h4>
+                        <p class="font-mono">
+                            "You have the right to remain silent. Anything you say can and will be used against you in a court of law. You have the right to an attorney. If you cannot afford an attorney, one will be provided for you. Do you understand the rights I have just read to you? With these rights in mind, do you wish to speak to me?"
+                        </p>
+                    `
+                }
+            ];
+
+            const proceduresData = [
+                {
+                    title: "Procedure: Traffic Stop",
+                    content: `
+                        <ol class="space-y-2">
+                            <li><strong>1. Initiate Stop:</strong> Select a safe location. <span class="text-cyan-300">Activate BWC and MAV</span> before initiating emergency lights. Notify dispatch of location, vehicle description, and license plate.</li>
+                            <li><strong>2. Tactical Condition & Approach:</strong> As you approach, keep your weapon-hand free. Watch occupants' hands and check for threats. <span class="text-yellow-300 font-semibold">If you observe furtive movement or other threat indicators, placing your hand on your holstered firearm is a reasonable readiness step.</span></li>
+                            <li><strong>3. Driver Contact:</strong> Introduce yourself and the department. State the reason for the stop. Request license, registration, and proof of insurance.</li>
+                            <li><strong>4. Action:</strong> Return to your vehicle. Run checks. Decide on enforcement action (warning, citation, arrest). <span class="text-red-400 font-semibold">Base your decision on the violation, not demographics (GO 501).</span></li>
+                            <li><strong>5. Conclude:</strong> Re-approach and explain the action taken. Provide a clear explanation of the citation. Ensure the driver understands. Return documents. Wish them a safe day and allow them to merge safely back into traffic.</li>
+                            <li><strong>6. Clear Call:</strong> Notify dispatch of the stop's conclusion and your status.</li>
+                        </ol>
+                    `
+                },
+                {
+                    title: "Procedure: Disturbance Call (Family Violence)",
+                    content: `
+                        <ol class="space-y-2">
+                            <li><strong>1. Dispatch Info:</strong> Get all available details: weapons, intoxication, injuries, children present, party separation, call history.</li>
+                            <li><strong>2. Safe Approach & Tactical Condition:</strong> Park away from the location, listen. <span class="text-red-400 font-semibold">Wait for backup.</span> Approach with your hand on your holstered firearm or Taser if circumstances warrant (e.g., sounds of active assault, known weapons).</li>
+                            <li><strong>3. Entry & Control:</strong> Approach cautiously. <span class="text-cyan-300">Immediately separate parties</span> upon entry to de-escalate and conduct individual interviews. Scan for weapons.</li>
+                            <li><strong>4. Investigation:</strong> Interview all parties and witnesses. Document statements. Photograph injuries and scene. Check for protective orders.</li>
+                            <li><strong>5. Determine Primary Aggressor:</strong> Based on evidence, determine the primary aggressor. <span class="text-yellow-300 font-semibold">An arrest should be made if PC exists for a family violence offense (GO 901).</span></li>
+                            <li><strong>6. Arrest & Victim Assistance:</strong> If an arrest is made, transport the suspect. <span class="text-cyan-300">Provide the victim with the mandatory family violence handout.</span> If strangulation is alleged, <span class="text-red-400 font-semibold">a medic SHALL be requested</span>.</li>
+                            <li><strong>7. Reporting:</strong> Complete a thorough report.</li>
+                        </ol>
+                    `
+                },
+                {
+                    title: "Procedure: Burglary in Progress",
+                    content: `
+                        <ol class="space-y-2">
+                            <li><strong>1. Response:</strong> Respond <span class="text-cyan-300">Code 3</span> but consider cutting siren/lights blocks away.</li>
+                            <li><strong>2. Arrival & Tactical Condition:</strong> <span class="text-red-400 font-semibold">Firearm should be unholstered and at a low-ready position upon exiting your vehicle.</span> This is a situation where a firearm is anticipated to be required (GO 305.7.7).</li>
+                            <li><strong>3. Containment:</strong> First officer is IC. <span class="text-cyan-300">Do not rush in.</span> Set up a perimeter on diagonal corners to contain exits.</li>
+                            <li><strong>4. Communication:</strong> Coordinate responding units to the perimeter. Keep radio traffic clear.</li>
+                            <li><strong>5. Announce Presence:</strong> If contained, use PA system to make announcements for the suspect to exit.</li>
+                            <li><strong>6. Search/Clear:</strong> If no response, formulate a search plan. <span class="text-red-400 font-semibold">Never search alone.</span> Conduct a slow, methodical search with firearms at a ready position.</li>
+                            <li><strong>7. Secure Scene:</strong> Once clear, secure the scene for investigators.</li>
+                        </ol>
+                    `
+                },
+                {
+                    title: "Procedure: Room Clearing Fundamentals",
+                    content: `
+                        <h4>Threshold Evaluation</h4>
+                        <ul>
+                            <li class="text-cyan-300">When entry is made, the first person should go to a known wall.</li>
+                            <li class="text-cyan-300">If no known wall, then choose a side.</li>
+                            <li class="text-cyan-300">#1 is always right, #2 will simply go the opposite direction of #1.</li>
+                            <li class="text-red-400 font-semibold">If you go wrong, stay wrong. Indecision in the doorway will cause problems.</li>
+                        </ul>
+                        <h4>Five Fundamentals of Room Clearing</h4>
+                        <ol>
+                            <li>Get through the door</li>
+                            <li>Clear the Corner</li>
+                            <li>Run the Wall</li>
+                            <li>Clear to Center</li>
+                            <li>Communicate</li>
+                        </ol>
+                        <h4>Inside the Room</h4>
+                        <ul>
+                            <li>Check around objects in the room.</li>
+                            <li>Check under objects in the room.</li>
+                        </ul>
+                    `
+                }
+            ];
+
+            const cuesData = [
+                {
+                    title: "Level 1: Passive Resistance",
+                    content: `
+                        <p>A person's refusal to comply with a lawful order that does not include any physical act, verbal statement, or pre-fight behavioral indicators that would cause an officer to believe that there is an immediate risk of bodily injury.</p>
+                        <h4>Subject Cues:</h4>
+                        <ul>
+                            <li>Verbally refuses to comply with commands.</li>
+                            <li>Goes limp (dead weight).</li>
+                            <li>Refuses to move or exit a vehicle.</li>
+                            <li>Sits or lays on the ground and refuses to get up.</li>
+                        </ul>
+                        <h4>Officer Response Options (Compliant with GO 300):</h4>
+                        <ul>
+                            <li><strong class="text-cyan-300">Verbal Commands & De-escalation:</strong> Continue to use verbal persuasion, explain consequences of non-compliance.</li>
+                            <li><strong class="text-cyan-300">Escort Techniques:</strong> Use of soft-hand control to guide the subject.</li>
+                            <li><strong class="text-cyan-300">Lift & Carry:</strong> If necessary and with sufficient officers to do so safely.</li>
+                            <li><strong class="text-yellow-300 font-semibold">Pain Compliance:</strong> May be considered if other options are ineffective, but must be discontinued once compliance is achieved.</li>
+                        </ul>
+                        <h4>Tactical Readiness</h4>
+                        <p>Force options remain holstered. Maintain a reactionary gap. Focus on communication and de-escalation.</p>
+                    `
+                },
+                {
+                    title: "Level 2: Defensive Resistance",
+                    content: `
+                        <p>Physical actions that attempt to prevent the officer's control, but make no directed attempt to harm the officer.</p>
+                        <h4>Subject Cues:</h4>
+                        <ul>
+                            <li>Tensing muscles, locking arms to chest or underneath body.</li>
+                            <li>Pulling or pushing away in a non-assaultive manner.</li>
+                            <li>Actively trying to break an officer's grip.</li>
+                            <li>Fleeing on foot without making any aggressive movements toward officers.</li>
+                        </ul>
+                        <h4>Officer Response Options (Compliant with GO 300, 303, 304):</h4>
+                        <ul>
+                            <li><strong class="text-cyan-300">Control Holds & Takedowns:</strong> Techniques designed to overcome resistance and gain control.</li>
+                            <li><strong class="text-cyan-300">Pain Compliance Techniques:</strong> Pressure points to gain compliance.</li>
+                            <li><strong class="text-yellow-300 font-semibold">Chemical Agents (OC Spray):</strong> May be justified if resistance continues and lesser options are ineffective. Give a verbal warning if feasible.</li>
+                            <li><strong class="text-yellow-300 font-semibold">Conducted Energy Device (Taser):</strong> May be justified in drive-stun mode for pain compliance if the subject is still resisting and lesser means have failed.</li>
+                        </ul>
+                        <h4>Tactical Readiness / Display of Force Options</h4>
+                        <ul>
+                            <li>Officer may take a defensive stance.</li>
+                            <li>Placing a hand on a holstered tool (Taser, Firearm) may be appropriate if the situation is escalating rapidly.</li>
+                            <li>Drawing a weapon is generally not justified unless resistance is escalating to Active Aggression.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Level 3: Active Aggression",
+                    content: `
+                        <p>A physical act threatening assault or a verbal statement threatening assault, coupled with the immediate ability to carry out the threat, that would cause a reasonable person to believe bodily injury is imminent.</p>
+                        <h4>Subject Cues:</h4>
+                        <ul>
+                            <li>Clenching fists, taking a bladed or fighting stance.</li>
+                            <li>Actively punching, kicking, or striking at an officer.</li>
+                            <li>Verbal threats like "I'm going to knock you out" while advancing.</li>
+                            <li>Attempting to disarm an officer.</li>
+                        </ul>
+                        <h4>Officer Response Options (Compliant with GO 300, 303, 304):</h4>
+                        <ul>
+                            <li><strong class="text-cyan-300">Defensive Tactics:</strong> Strikes, kicks, or other techniques to stop the assault and create distance.</li>
+                            <li><strong class="text-yellow-300 font-semibold">Impact Weapons (Baton):</strong> Justified when empty-hand techniques are insufficient to stop the assault. Target large muscle groups.</li>
+                            <li><strong class="text-yellow-300 font-semibold">Chemical Agents (OC Spray):</strong> Effective tool to disorient and gain control.</li>
+                            <li><strong class="text-yellow-300 font-semibold">Conducted Energy Device (Taser):</strong> Probe deployment is justified to incapacitate the subject and stop the threat.</li>
+                        </ul>
+                        <h4>Tactical Readiness / Display of Force Options</h4>
+                        <ul>
+                            <li><strong class="text-yellow-300 font-semibold">Taser / OC Spray Out:</strong> Drawing a less-lethal tool and aiming is justified to stop the threat of assault when the subject is unarmed.</li>
+                            <li><strong class="text-cyan-300">Hand on Firearm:</strong> Maintaining a firm grip on a holstered firearm is a reasonable safety measure.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Level 4: Aggravated Active Aggression (Lethal Force Threat)",
+                    content: `
+                        <p>The subject's actions are reasonably perceived to create an imminent threat of death or serious bodily injury to the officer or another person.</p>
+                        <h4>Subject Cues:</h4>
+                        <ul>
+                            <li class="text-red-400 font-semibold">Producing a deadly weapon (firearm, knife, club) and threatening its use.</li>
+                            <li class="text-red-400 font-semibold">Firing a weapon at or in the direction of anyone.</li>
+                            <li class="text-red-400 font-semibold">Attempting to run an officer down with a vehicle.</li>
+                            <li class="text-red-400 font-semibold">Demonstrating the ability and intent to cause death or SBI through unarmed force (e.g., a trained fighter violently assaulting a downed person).</li>
+                        </ul>
+                        <h4>Officer Response Options (Compliant with GO 300, 305):</h4>
+                        <ul>
+                            <li><strong class="text-red-400 font-semibold">Lethal Force (Firearm):</strong> The use of a firearm is justified when an officer reasonably believes it is necessary to protect themself or others from an <strong class="text-yellow-300 font-semibold">imminent threat of death or serious bodily injury.</strong></li>
+                            <li><strong class="text-cyan-300">Tactical Repositioning:</strong> Move to a position of cover and advantage.</li>
+                            <li><strong class="text-cyan-300">Verbal Commands:</strong> If feasible without increasing risk, give commands such as "Police! Drop the weapon!"</li>
+                        </ul>
+                        <h4>Tactical Readiness / Display of Force Options</h4>
+                        <ul>
+                            <li><strong class="text-red-400 font-semibold">Firearm Out & Ready:</strong> Per GO 305.7.7, your firearm may be drawn and readied for use when it is anticipated it may be required to counter an imminent threat of death or SBI.</li>
+                            <li><strong class="text-cyan-300">Lethal Cover:</strong> In team scenarios, one officer should be designated to provide lethal cover while other options are attempted.</li>
+                        </ul>
+                    `
+                }
+            ];
+
+            const verbalCommandsData = [
+                {
+                    title: "Initial Contact / Traffic Stop",
+                    content: `
+                        <p>Goal: Professional, calm, and clear communication.</p>
+                        <ul>
+                            <li>"Hello, I'm Officer [Last Name] with the Denton Police Department."</li>
+                            <li>"The reason I stopped you is for [state violation clearly, e.g., 'speeding']."</li>
+                            <li>"May I see your driver's license and proof of insurance, please?"</li>
+                            <li>"Please keep your hands on the steering wheel where I can see them."</li>
+                            <li>"Do you have any weapons in the vehicle I should be aware of?"</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "High-Risk Stop / Felony Stop",
+                    content: `
+                        <p>Goal: Overwhelming, clear, and concise commands from a position of cover.</p>
+                        <ul>
+                            <li>"DRIVER! TURN OFF THE CAR AND TOSS THE KEYS OUT THE WINDOW!"</li>
+                            <li>"DRIVER! SHOW ME YOUR HANDS! OPEN YOUR HANDS!"</li>
+                            <li>"DRIVER! WITH YOUR LEFT HAND, OPEN THE DOOR FROM THE OUTSIDE!"</li>
+                            <li>"DRIVER! STEP OUT OF THE VEHICLE FACING AWAY FROM ME!"</li>
+                            <li>"WALK BACKWARDS SLOWLY TOWARDS THE SOUND OF MY VOICE!"</li>
+                            <li>"STOP! GET ON YOUR KNEES! CROSS YOUR FEET!"</li>
+                            <li>"LIE FACE DOWN ON THE GROUND, ARMS OUT LIKE AN AIRPLANE, PALMS UP!"</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Subject Resisting Arrest",
+                    content: `
+                        <p>Goal: Gain compliance and overcome resistance while clearly stating the legal basis for your actions.</p>
+                        <ul>
+                            <li>"STOP RESISTING! YOU ARE UNDER ARREST!"</li>
+                            <li>"PUT YOUR HANDS BEHIND YOUR BACK!"</li>
+                            <li>"POLICE! GET ON THE GROUND!"</li>
+                            <li>(If deploying Taser): <strong class="text-yellow-300 font-semibold">"TASER! TASER! TASER!"</strong></li>
+                            <li>(If deploying OC): <strong class="text-yellow-300 font-semibold">"SPRAY! SPRAY! SPRAY!"</strong></li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "De-escalation / Mental Health Crisis",
+                    content: `
+                        <p>Goal: Build rapport, lower anxiety, and gain voluntary compliance. Use a calm, non-judgmental tone.</p>
+                        <ul>
+                            <li>"My name is [Officer Name]. I'm here to help. What's your name?"</li>
+                            <li>"I can see that you're upset. Can you tell me what's going on?"</li>
+                            <li>"I'm listening. Take your time and tell me what happened."</li>
+                            <li>"Let's work together to figure this out. What can I do to help you right now?"</li>
+                            <li>"For my safety and yours, I need you to show me your hands. I'm not going to hurt you."</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Crowd Control / Dispersal Order",
+                    content: `
+                        <p>Goal: Provide a clear, lawful order that gives individuals an opportunity to comply before enforcement action. Based on GO 519.</p>
+                        <ul>
+                            <li>"THIS IS THE DENTON POLICE DEPARTMENT."</li>
+                            <li>"I AM DECLARING THIS AN UNLAWFUL ASSEMBLY."</li>
+                            <li>"YOU ARE ORDERED TO IMMEDIATELY LEAVE THE AREA."</li>
+                            <li>"YOU MUST DISPERSE TO THE [NORTH/SOUTH/EAST/WEST] ON [STREET NAME]."</li>
+                            <li>"IF YOU DO NOT LEAVE, YOU WILL BE SUBJECT TO ARREST AND/OR THE USE OF FORCE."</li>
+                            <li>"YOU HAVE [STATE A REASONABLE AMOUNT OF TIME] TO COMPLY."</li>
+                        </ul>
+                    `
+                }
+            ];
+            
+            // --- DOM Elements ---
+            const checklistContainer = document.getElementById('checklist-container');
+            const guideContainer = document.getElementById('guide-container');
+            const proceduresContainer = document.getElementById('procedures-container');
+            const cuesContainer = document.getElementById('cues-container');
+            const commandsContainer = document.getElementById('commands-container');
+            const resetBtn = document.getElementById('resetChecklist');
+            const searchGuideInput = document.getElementById('searchGuide');
+            const searchProceduresInput = document.getElementById('searchProcedures');
+            const searchCuesInput = document.getElementById('searchCues');
+            const searchCommandsInput = document.getElementById('searchCommands');
+            const checklistTab = document.getElementById('checklist-tab');
+            const guideTab = document.getElementById('guide-tab');
+            const proceduresTab = document.getElementById('procedures-tab');
+            const cuesTab = document.getElementById('cues-tab');
+            const commandsTab = document.getElementById('commands-tab');
+            const checklistPanel = document.getElementById('checklist');
+            const guidePanel = document.getElementById('guide');
+            const proceduresPanel = document.getElementById('procedures');
+            const cuesPanel = document.getElementById('cues');
+            const commandsPanel = document.getElementById('commands');
+
+            // --- Functions ---
+            function renderChecklist() {
+                checklistContainer.innerHTML = '';
+                for (const category in checklistData) {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.innerHTML = `<h3 class="text-lg font-semibold border-b border-gray-600 pb-2 mb-2 text-gray-300">${category}</h3>`;
+                    const list = document.createElement('ul');
+                    list.className = 'space-y-2';
+                    
+                    checklistData[category].forEach((item, index) => {
+                        const itemId = `${category.replace(/\s+/g, '-')}-${index}`;
+                        const isChecked = localStorage.getItem(itemId) === 'true';
+                        
+                        const listItem = document.createElement('li');
+                        listItem.className = `checklist-item flex items-center ${isChecked ? 'checked' : ''}`;
+                        listItem.innerHTML = `
+                            <input type="checkbox" id="${itemId}" class="hidden" ${isChecked ? 'checked' : ''}>
+                            <label for="${itemId}" class="flex items-center cursor-pointer w-full">
+                                <span class="checkbox-icon w-6 h-6 rounded-md flex items-center justify-center mr-3 transition-all">
+                                    <i class="fas fa-check text-sm"></i>
+                                </span>
+                                <span class="flex-1">${item}</span>
+                            </label>
+                        `;
+                        list.appendChild(listItem);
+                    });
+                    categoryDiv.appendChild(list);
+                    checklistContainer.appendChild(categoryDiv);
+                }
+                addChecklistListeners();
+            }
+
+            function addChecklistListeners() {
+                document.querySelectorAll('.checklist-item input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        localStorage.setItem(this.id, this.checked);
+                        this.closest('.checklist-item').classList.toggle('checked', this.checked);
+                    });
+                });
+            }
+
+            function resetChecklist() {
+                 if (confirm("Are you sure you want to reset the checklist? This cannot be undone.")) {
+                    for (const category in checklistData) {
+                        checklistData[category].forEach((item, index) => {
+                            const itemId = `${category.replace(/\s+/g, '-')}-${index}`;
+                            localStorage.removeItem(itemId);
+                        });
+                    }
+                    renderChecklist();
+                }
+            }
+
+            function renderContent(container, data, filter = '') {
+                container.innerHTML = '';
+                const lowerFilter = filter.toLowerCase();
+
+                data.forEach(item => {
+                    if (item.title.toLowerCase().includes(lowerFilter) || item.content.toLowerCase().includes(lowerFilter)) {
+                        const details = document.createElement('details');
+                        details.className = 'bg-gray-700 rounded-lg overflow-hidden';
+                        details.innerHTML = `
+                            <summary class="font-semibold p-3 cursor-pointer hover:bg-gray-600 flex justify-between items-center">
+                                ${item.title}
+                                <i class="fas fa-chevron-down transition-transform"></i>
+                            </summary>
+                            <div class="guide-content p-4 border-t border-gray-600 bg-gray-750">
+                                ${item.content}
+                            </div>
+                        `;
+                        container.appendChild(details);
+                    }
+                });
+                addDetailsListeners(container);
+            }
+            
+            function addDetailsListeners(container) {
+                container.querySelectorAll('details').forEach(detail => {
+                    detail.addEventListener('toggle', function() {
+                        const icon = this.querySelector('summary i');
+                        if (this.open) {
+                            icon.style.transform = 'rotate(180deg)';
+                        } else {
+                            icon.style.transform = 'rotate(0deg)';
+                        }
+                    });
+                });
+            }
+
+            function switchTab(activeTab) {
+                const tabs = { checklist: checklistTab, guide: guideTab, procedures: proceduresTab, cues: cuesTab, commands: commandsTab };
+                const panels = { checklist: checklistPanel, guide: guidePanel, procedures: proceduresPanel, cues: cuesPanel, commands: commandsPanel };
+
+                for (const tabName in tabs) {
+                    const tab = tabs[tabName];
+                    const panel = panels[tabName];
+                    if (tabName === activeTab) {
+                        tab.classList.add('border-blue-500', 'text-blue-500');
+                        tab.setAttribute('aria-selected', 'true');
+                        panel.classList.remove('hidden');
+                    } else {
+                        tab.classList.remove('border-blue-500', 'text-blue-500');
+                        tab.setAttribute('aria-selected', 'false');
+                        panel.classList.add('hidden');
+                    }
+                }
+            }
+
+
+            // --- Event Listeners ---
+            resetBtn.addEventListener('click', resetChecklist);
+            searchGuideInput.addEventListener('input', (e) => renderContent(guideContainer, guideData, e.target.value));
+            searchProceduresInput.addEventListener('input', (e) => renderContent(proceduresContainer, proceduresData, e.target.value));
+            searchCuesInput.addEventListener('input', (e) => renderContent(cuesContainer, cuesData, e.target.value));
+            searchCommandsInput.addEventListener('input', (e) => renderContent(commandsContainer, verbalCommandsData, e.target.value));
+            
+            checklistTab.addEventListener('click', () => switchTab('checklist'));
+            guideTab.addEventListener('click', () => switchTab('guide'));
+            proceduresTab.addEventListener('click', () => switchTab('procedures'));
+            cuesTab.addEventListener('click', () => switchTab('cues'));
+            commandsTab.addEventListener('click', () => switchTab('commands'));
+
+            // --- Initial Render ---
+            renderChecklist();
+            renderContent(guideContainer, guideData);
+            renderContent(proceduresContainer, proceduresData);
+            renderContent(cuesContainer, cuesData);
+            renderContent(commandsContainer, verbalCommandsData);
+            switchTab('checklist'); // Start on checklist tab
+        });
+    </script>
+</body>
+</html>
