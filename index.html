@@ -52,7 +52,7 @@
             margin-bottom: 0.25rem;
             color: #93c5fd;
         }
-         .guide-content ul, .guide-content ol {
+         .guide-content ul, .guide-content ol, .guide-content p {
             list-style-position: inside;
             margin-bottom: 0.5rem;
         }
@@ -61,6 +61,18 @@
         }
         .guide-content ol {
             list-style-type: decimal;
+        }
+        .dialog-path {
+            margin-top: 0.75rem;
+            padding-left: 1rem;
+            border-left: 2px solid #4b5563;
+        }
+        .dialog-path-title {
+            font-weight: 600;
+            color: #6ee7b7; /* Compliant Path */
+        }
+         .dialog-path-title.escalated {
+            color: #f87171; /* Escalated Path */
         }
     </style>
 </head>
@@ -98,6 +110,21 @@
                 <li class="mr-2" role="presentation">
                     <button class="inline-block p-4 border-b-2 rounded-t-lg" id="commands-tab" type="button" role="tab" aria-controls="commands" aria-selected="false">
                         <i class="fas fa-bullhorn mr-2"></i>Verbal Commands
+                    </button>
+                </li>
+                 <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="dialogs-tab" type="button" role="tab" aria-controls="dialogs" aria-selected="false">
+                        <i class="fas fa-comments mr-2"></i>Dialogs
+                    </button>
+                </li>
+                <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="investigation-tab" type="button" role="tab" aria-controls="investigation" aria-selected="false">
+                        <i class="fas fa-search-plus mr-2"></i>Investigation
+                    </button>
+                </li>
+                <li class="mr-2" role="presentation">
+                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="radio-tab" type="button" role="tab" aria-controls="radio" aria-selected="false">
+                        <i class="fas fa-headset mr-2"></i>Radio Practice
                     </button>
                 </li>
             </ul>
@@ -180,6 +207,48 @@
                     </div>
                     <div id="commands-container" class="space-y-2">
                         <!-- Commands content will be injected here by JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dialogs Section -->
+            <div id="dialogs" role="tabpanel" aria-labelledby="dialogs-tab" class="hidden">
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-blue-300 mb-4">Situational Dialogs</h2>
+                    <div class="relative mb-4">
+                        <input type="text" id="searchDialogs" class="w-full bg-gray-700 border border-gray-600 text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 pl-10" placeholder="Search dialogs...">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div id="dialogs-container" class="space-y-2">
+                        <!-- Dialogs content will be injected here by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Investigation Section -->
+            <div id="investigation" role="tabpanel" aria-labelledby="investigation-tab" class="hidden">
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-blue-300 mb-4">Investigative Dialogs & Techniques</h2>
+                    <div class="relative mb-4">
+                        <input type="text" id="searchInvestigation" class="w-full bg-gray-700 border border-gray-600 text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 pl-10" placeholder="Search investigation topics...">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div id="investigation-container" class="space-y-2">
+                        <!-- Investigation content will be injected here by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Radio Practice Section -->
+            <div id="radio" role="tabpanel" aria-labelledby="radio-tab" class="hidden">
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-semibold text-blue-300 mb-4">Radio Communications Practice</h2>
+                    <div id="radio-container" class="space-y-2">
+                        <!-- Radio practice content will be injected here by JS -->
                     </div>
                 </div>
             </div>
@@ -704,6 +773,528 @@
                     `
                 }
             ];
+
+            const dialogsData = [
+                {
+                    title: "Dialog: Responding to a Robbery in Progress",
+                    content: `
+                        <p><strong>Goal:</strong> Arrive safely, contain the scene, challenge suspects with clear commands from cover, and protect life. (GO 405)</p>
+                        <ul>
+                            <li><strong>Dispatch:</strong> "Units respond Code 3 to 123 Main Street, the Corner Store, for a robbery in progress. Caller states two males, one with a handgun, are robbing the clerk."</li>
+                            <li><strong>You (Arriving):</strong> (Take position of cover with firearm at a ready position). "POLICE! TO THE TWO MALES INSIDE, THIS IS THE DENTON POLICE DEPARTMENT! YOU ARE SURROUNDED! COME OUT WITH YOUR HANDS UP!"</li>
+                        </ul>
+                        <div class="dialog-path">
+                            <h4 class="dialog-path-title">Path A: Suspects Comply</h4>
+                            <ul>
+                                <li><strong>Suspect 1:</strong> "Okay, okay, we're coming out!"</li>
+                                <li><strong>You:</strong> "COME OUT SLOWLY, ONE AT A TIME, WITH YOUR HANDS EMPTY AND VISIBLE! WALK BACKWARDS TOWARDS MY VOICE!" (Transition to High-Risk Stop commands to take them into custody safely).</li>
+                            </ul>
+                        </div>
+                        <div class="dialog-path">
+                            <h4 class="dialog-path-title escalated">Path B: Suspects Flee</h4>
+                            <ul>
+                                <li><strong>You (to radio):</strong> "Denton, suspects are fleeing out the back door, heading eastbound on foot!" (Initiate foot pursuit procedures - GO 307).</li>
+                            </ul>
+                        </div>
+                         <div class="dialog-path">
+                            <h4 class="dialog-path-title escalated">Path C: Hostage Situation Develops</h4>
+                            <ul>
+                                <li><strong>Suspect 2 (from inside):</strong> "You come any closer and I'll shoot the clerk!"</li>
+                                <li><strong>You (to radio):</strong> "Denton, this is now a hostage situation. Suspect is threatening the clerk. Start SWAT and negotiators."</li>
+                                <li><strong>You (to suspect):</strong> "WE DON'T WANT ANYONE TO GET HURT. WE'RE NOT COMING IN. LET'S TALK ABOUT THIS." (Maintain cover and containment, do not engage further until specialized units arrive - GO 403).</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    title: "Dialog: Felony Traffic Stop (Stolen Vehicle)",
+                    content: `
+                        <p><strong>Goal:</strong> Maintain a position of tactical advantage (cover/distance) and use clear, repetitive commands to safely take suspects into custody. (GO 306, High-Risk Stop Commands)</p>
+                        <ul>
+                            <li><strong>You (to radio):</strong> "Denton, [Unit #], I have a confirmed stolen vehicle, [plate], occupied two times. I'm initiating a felony stop at [location]. Start backup."</li>
+                            <li><strong>You (over PA):</strong> "DRIVER, THIS IS THE DENTON POLICE! YOU ARE UNDER ARREST. FOLLOW MY INSTRUCTIONS OR FORCE MAY BE USED. TURN OFF THE VEHICLE NOW! TOSS THE KEYS OUT THE DRIVER'S WINDOW!"</li>
+                            <li><strong>You (over PA):</strong> "DRIVER! WITH YOUR LEFT HAND, REACH OUTSIDE AND OPEN THE DOOR! STEP OUT FACING AWAY FROM ME! SHOW ME YOUR HANDS!"</li>
+                        </ul>
+                        <p>...continue with High-Risk Stop verbal commands until all occupants are secured.</p>
+                    `
+                },
+                {
+                    title: "Dialog: Encountering a Person with a Firearm",
+                    content: `
+                        <p><strong>Goal:</strong> Create distance, find cover, and issue clear commands to neutralize the immediate lethal threat. (GO 300.6)</p>
+                        <ul>
+                            <li><strong>You (upon seeing firearm):</strong> (Immediately move to cover). "POLICE! DROP THE GUN! DROP THE GUN NOW!"</li>
+                        </ul>
+                         <div class="dialog-path">
+                            <h4 class="dialog-path-title">Path A: Compliant</h4>
+                            <ul>
+                                <li><strong>Person:</strong> (Drops the gun and raises hands).</li>
+                                <li><strong>You:</strong> "THANK YOU! NOW, SLOWLY KICK THE GUN AWAY FROM YOU! WALK BACKWARDS TOWARDS ME! GET ON YOUR KNEES!" (Proceed with high-risk arrest commands).</li>
+                            </ul>
+                        </div>
+                        <div class="dialog-path">
+                            <h4 class="dialog-path-title escalated">Path B: Non-Compliant / Threatening Action</h4>
+                            <ul>
+                                <li><strong>Person:</strong> (Does not drop the gun, turns toward you or others).</li>
+                                <li><strong>You:</strong> <span class="text-red-400 font-semibold">"DROP THE GUN!"</span> (If the person raises the firearm or makes any other overt action that creates an imminent threat of death or SBI, the use of lethal force is justified).</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    title: "Dialog: Suicidal Person (No Imminent Threat to Others)",
+                    content: `
+                        <p><strong>Goal:</strong> Build rapport, show empathy, and persuade the person to accept help, while maintaining safety. (GO 512)</p>
+                        <ul>
+                            <li><strong>You:</strong> (From a safe distance, speaking calmly) "Sir/Ma'am, my name is Officer [Name]. I'm not here to judge you or get you in trouble. I'm here because someone is worried about you. Can you tell me your name?"</li>
+                        </ul>
+                        <div class="dialog-path">
+                            <h4 class="dialog-path-title">Path A: Begins to Engage</h4>
+                            <ul>
+                                <li><strong>Person:</strong> "It's John... It doesn't matter anymore."</li>
+                                <li><strong>You:</strong> "It matters to me, John. I want to hear what's going on. It sounds like you're in a lot of pain right now. Can you tell me about it?"</li>
+                                <li><strong>John:</strong> "I just lost my job... my wife left... there's nothing left."</li>
+                                <li><strong>You:</strong> "That sounds incredibly overwhelming, John. I can't imagine how tough that must be. With everything you're going through, are you thinking about killing yourself?"</li>
+                                <li><strong>John:</strong> "Yes."</li>
+                                <li><strong>You:</strong> "Thank you for being honest with me. That takes a lot of courage. I want to get you some help. There are people who can help you work through this. Can we talk about getting you to the hospital so you can talk to someone?"</li>
+                            </ul>
+                        </div>
+                        <div class="dialog-path">
+                            <h4 class="dialog-path-title escalated">Path B: Refuses to Engage / Agitated</h4>
+                            <ul>
+                                <li><strong>Person:</strong> "Go away! Leave me alone! You can't help me!"</li>
+                                <li><strong>You:</strong> "Okay, I hear you. I'll stay back here, but I can't leave you while you're feeling this way. Your safety is my top priority right now. We can just sit here for a bit. We don't have to talk if you don't want to."</li>
+                                <li><strong>(To Radio):</strong> "Denton, [Unit#], subject is refusing to communicate. Starting a CIRT unit and a supervisor to my location. We are stable for now."</li>
+                                <li><strong>You (if they have a weapon):</strong> "I see you have a [weapon]. I'm not going to rush you. For my safety, can you please just put it down on the ground so we can talk more safely? No one wants to see you get hurt."</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    title: "Dialog: Person High on Stimulants (e.g., Meth)",
+                    content: `
+                        <p><strong>Goal:</strong> Safely manage a highly unpredictable, paranoid individual. De-escalate if possible, but be prepared for a rapid escalation. Officer safety is paramount.</p>
+                        <ul>
+                            <li><strong>You:</strong> (From a distance, keeping hands free) "Hey man, police. We're here to check on you. Is everything alright?" (Look for rapid movements, dilated pupils, excessive sweating, paranoia).</li>
+                        </ul>
+                        <div class="dialog-path">
+                            <h4 class="dialog-path-title">Path A: De-escalation is Working</h4>
+                            <ul>
+                                <li><strong>Person:</strong> "They're watching me... they're everywhere."</li>
+                                <li><strong>You:</strong> "Okay, I understand you feel like you're being watched. I'm not here to hurt you. My only goal is to make sure you're safe. Can you show me your hands so I know you don't have anything that can hurt you or me?"</li>
+                                <li><strong>You:</strong> "Let's focus on me right now. Just you and me. Let's walk over to the ambulance so the medics can check you out. They can help you feel better."</li>
+                            </ul>
+                        </div>
+                        <div class="dialog-path">
+                            <h4 class="dialog-path-title escalated">Path B: Paranoia Escalates / Becomes Aggressive</h4>
+                            <ul>
+                                <li><strong>Person:</strong> "You're one of them! You're here to get me!" (Takes a bladed stance or clenches fists).</li>
+                                <li><strong>You:</strong> (Create more distance, get behind cover if possible). "I'm not here to get you, I'm here to help! Stay right there! Do not come any closer!"</li>
+                                <li><strong>(To Radio):</strong> "Denton, [Unit#], subject is becoming aggressive, appears to be under the influence of narcotics. I need another unit here Code 3."</li>
+                                <li><strong>You:</strong> "STOP! GET BACK! DON'T MAKE ME HURT YOU!" (Transition to appropriate force options based on "Response Cues" if they advance).</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                {
+                    title: "Dialog: Traffic Stop to Narcotics Investigation",
+                    content: `
+                         <p><strong>Goal:</strong> Articulate developing reasonable suspicion beyond the initial traffic violation to justify prolonging the stop and asking for consent to search.</p>
+                        <ul>
+                            <li><strong>You:</strong> (After running license) "Okay sir, here is your license back with a warning for the speeding. Can I ask you a few questions before you go?"</li>
+                            <li><strong>Driver:</strong> "Uh, sure."</li>
+                            <li><strong>You:</strong> "I'm smelling the strong odor of marijuana coming from inside your car. Is there any marijuana in here?"</li>
+                        </ul>
+                         <div class="dialog-path">
+                            <h4 class="dialog-path-title">Path A: Admission / Consent</h4>
+                            <ul>
+                                <li><strong>Driver:</strong> "Yeah, I have a little bit in the center console."</li>
+                                <li><strong>You:</strong> "Okay, I appreciate you being honest. Because of the odor and your admission, I have probable cause to search your vehicle. I'm going to have you step out and I will conduct a search now."</li>
+                            </ul>
+                        </div>
+                        <div class="dialog-path">
+                            <h4 class="dialog-path-title escalated">Path B: Denial / No Consent</h4>
+                            <ul>
+                                 <li><strong>Driver:</strong> "No, there's nothing in my car. You can't search it."</li>
+                                 <li><strong>You:</strong> "You are correct that you don't have to give me consent. However, based on the strong odor of marijuana, I have <span class="text-yellow-300 font-semibold">probable cause</span> to believe there are illegal narcotics in your vehicle, which allows me to search it under the vehicle exception rule. Please step out of the car."</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                 {
+                    title: "Dialog: Civil Standby (Property Retrieval)",
+                    content: `
+                         <p><strong>Goal:</strong> Clearly define your limited role as a peacekeeper and avoid getting involved in the civil dispute.</p>
+                        <ul>
+                            <li><strong>You (to both parties):</strong> "Good evening. I'm Officer [Name]. I'm here for a civil standby while [Person A] retrieves their personal property. My only role here is to keep the peace and make sure this exchange happens without any threats or violence."</li>
+                            <li><strong>You (to both parties):</strong> "<span class="text-red-400 font-semibold">I cannot force either of you to give up property. I am not here to decide who owns what.</span> This is a civil matter for the courts to decide. I am only here to prevent a criminal offense from happening."</li>
+                             <li><strong>Person B:</strong> "She can't take that TV! I paid for it!"</li>
+                              <li><strong>You:</strong> "Sir, again, I can't determine who owns that TV. If you two cannot agree on it, then you need to leave it here and handle it in civil court. I'm only here to make sure everyone stays calm and safe."</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Dialog: Unattended Death Initial Contact",
+                    content: `
+                         <p><strong>Goal:</strong> Show compassion and professionalism while securing the scene and gathering preliminary information without contaminating the investigation.</p>
+                        <ul>
+                            <li><strong>You (to family member):</strong> "Ma'am/Sir, I am so sorry for your loss. My name is Officer [Name]. I know this is an incredibly difficult time. I do have to ask you a few questions and secure the room, just as a matter of procedure."</li>
+                            <li><strong>You:</strong> "Could you tell me what happened when you found them?"</li>
+                            <li><strong>You:</strong> "When was the last time you spoke with them or saw them alive?"</li>
+                            <li><strong>You:</strong> "Did they have any ongoing medical problems that you know of?"</li>
+                            <li><strong>You:</strong> "I need to have you wait in the other room while my supervisor and the medical examiner are on their way. We will keep you updated. Is there anyone I can call for you to be here with you?"</li>
+                        </ul>
+                    `
+                }
+            ];
+            
+            const investigationData = [
+                 {
+                    title: "Investigation: Core Principles",
+                    content: `
+                        <p>These principles apply to almost every preliminary investigation conducted by a patrol officer.</p>
+                        <h4>Scene Management</h4>
+                        <ul>
+                            <li><span class="text-red-400 font-semibold">Officer Safety First:</span> Your first job is to make the scene safe. Address any immediate threats before starting the investigation.</li>
+                            <li><span class="text-cyan-300">Render Aid:</span> Provide or summon medical aid for injured persons as your next priority.</li>
+                            <li><span class="text-cyan-300">Establish Perimeters:</span> Use crime scene tape to create an inner perimeter (the immediate crime scene) and an outer perimeter to keep onlookers out.</li>
+                            <li><span class="text-red-400 font-semibold">Preserve Evidence:</span> Don't touch or move anything unless absolutely necessary for safety or medical aid. Protect evidence from the elements (rain, wind).</li>
+                        </ul>
+                        <h4>Identifying & Separating Parties</h4>
+                        <ul>
+                            <li>Identify everyone involved: Victims, Witnesses, and Suspects.</li>
+                            <li><span class="text-red-400 font-semibold">Separate them immediately.</span> Do not let them talk to each other to prevent their stories from influencing one another.</li>
+                            <li>Get identification from everyone if possible.</li>
+                        </ul>
+                        <h4>Interviewing Basics</h4>
+                        <ul>
+                             <li><strong>Victims/Witnesses:</strong> Start with broad, open-ended questions like, <span class="text-yellow-300 font-semibold">"Tell me everything that happened from the very beginning."</span> Let them tell their story without interruption first. Then, follow up with specific questions.</li>
+                             <li><strong>Suspects:</strong> If a suspect is detained and you begin asking incriminating questions, you are in a custodial interrogation. <span class="text-red-400 font-semibold">You MUST read them their Miranda rights first.</span></li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Investigation: Assessing Credibility / Deception Cues",
+                    content: `
+                        <p><strong class="text-red-400 font-semibold">Disclaimer:</strong> These are only potential indicators, not proof of lying. People may exhibit these behaviors due to stress, fear, or medical/mental health conditions. Use these cues to identify areas of a story that need more questioning and corroboration, not to make a final conclusion.</p>
+                        <h4>Verbal Cues to Watch For</h4>
+                        <ul>
+                            <li><strong>Conflicting Statements:</strong> The story changes significantly upon retelling.</li>
+                            <li><strong>Unusually Specific Denials:</strong> "I did not touch her on her left shoulder with my right hand."</li>
+                            <li><strong>"I Swear" Statements:</strong> Overuse of phrases like "I swear to God," "To be honest," or "I swear on my mother's grave."</li>
+                            <li><strong>Selective Memory:</strong> Recalling minute details of one part of the event but having a total memory loss about the critical moments.</li>
+                            <li><strong>Attacking the Victim:</strong> "Why would you believe them? They're a liar/crazy/etc."</li>
+                        </ul>
+                        <h4>Non-Verbal Cues to Watch For</h4>
+                        <ul>
+                            <li><strong>A-syncrony:</strong> Saying "yes" while shaking their head "no."</li>
+                            <li><strong>Grooming Gestures:</strong> Suddenly adjusting hair, clothing, or jewelry when a tough question is asked.</li>
+                            <li><strong>Hiding Mouth/Eyes:</strong> Covering their mouth or shielding their eyes when speaking.</li>
+                            <li><strong>Defensive Body Posture:</strong> Tightly crossed arms/legs, turning their body away from you.</li>
+                            <li><strong>No Emotional Connection:</strong> Describing a highly emotional event in a flat, detached tone.</li>
+                        </ul>
+                        <h4>What to Do When You Suspect Deception</h4>
+                        <p>Don't call them a liar. Instead, use their cues to dig deeper.</p>
+                        <ul>
+                            <li>"Okay, you said earlier that [first version of story]. Can you help me understand how that fits with what you just told me about [second version of story]?"</li>
+                            <li>"Let's go over that part one more time. I want to make sure I have it exactly right in my report."</li>
+                            <li><span class="text-yellow-300 font-semibold">Look for corroborating evidence.</span> Your suspicion means you need to find physical evidence, other witnesses, or video to confirm or deny their statement.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Investigation: Family Violence / Assault with Injury",
+                    content: `
+                        <p><strong>Goal:</strong> Identify the <span class="text-red-400 font-semibold">primary aggressor</span>, document injuries and threats, check for strangulation, and determine if an offense occurred. (GO 901)</p>
+                        <h4>On Arrival: What to Look For & Anticipate</h4>
+                        <ul>
+                            <li><strong>Anticipate:</strong> A volatile and rapidly changing scene. Things are rarely as they first appear. One party may be calm while the other is hysterical, which is not an indicator of guilt.</li>
+                            <li><strong>Look For:</strong> Signs of a struggle (overturned furniture, broken items), visible injuries, weapons, and the presence of children.</li>
+                        </ul>
+                        <h4>Investigative Questions / Dialogs (Interview all parties separately)</h4>
+                        <ul>
+                            <li><strong>To the Victim:</strong> "Tell me what happened tonight from the beginning."</li>
+                            <li>"<span class="text-red-400 font-semibold">Did they put their hands on their neck or choke you in any way? Did you have trouble breathing?</span>" (This is a felony - Strangulation).</li>
+                             <li>"Did they hit you with their hand or an object? Where?"</li>
+                            <li>"Did they threaten to hurt you or your family?"</li>
+                            <li>"Has this happened before? Is there a history of violence?"</li>
+                            <li>"Are you afraid for your safety if I leave and don't arrest them?"</li>
+                            <li><strong>To the Suspect:</strong> "Tell me what happened from your perspective."</li>
+                             <li>"She has some scratches on her arm. Can you tell me how she got those?"</li>
+                             <li>"Did you touch her at any point during the argument?"</li>
+                             <li>"Did you feel you were defending yourself?" (Listen to their explanation of why they used force).</li>
+                            <li><strong>To Children (if appropriate):</strong> "What did you see or hear tonight?" (Use simple, non-leading questions).</li>
+                        </ul>
+                        <h4>Evidence to Look For & Document</h4>
+                        <ul>
+                            <li><span class="text-cyan-300">Photograph all injuries,</span> no matter how minor. Photograph the <span class="text-yellow-300 font-semibold">lack of injuries</span> if one party claims they were assaulted but has no marks.</li>
+                            <li><span class="text-cyan-300">Photograph the scene,</span> especially signs of a struggle.</li>
+                            <li>Independent witnesses (if any).</li>
+                             <li>Check and run both parties for prior FV history and active Protective Orders.</li>
+                        </ul>
+                    `
+                },
+                 {
+                    title: "Investigation: Violation of a Protective Order",
+                    content: `
+                        <p><strong>Goal:</strong> Establish the three key elements for arrest: 1) A valid order exists, 2) The suspect had knowledge of the order, 3) The suspect violated a condition of the order.</p>
+                        <h4>On Arrival/Initial Actions</h4>
+                        <ul>
+                            <li>If the suspect is still on scene, detain them.</li>
+                            <li><span class="text-cyan-300">Ask dispatch to confirm the Protective Order is active</span> and has been served. Do not make an arrest until it is confirmed as served.</li>
+                        </ul>
+                        <h4>Investigative Questions / Dialogs (Victim Interview)</h4>
+                        <ul>
+                            <li>"I understand you have a Protective Order against [Suspect's Name]. Can you tell me what happened today?"</li>
+                            <li>"<span class="text-yellow-300 font-semibold">How did they contact you?</span> (e.g., came to the house, called, texted, messaged on social media, third party)."</li>
+                            <li>"What time did this happen?"</li>
+                            <li>"Did they say anything threatening?"</li>
+                             <li>"<span class="text-cyan-300">Can I see the text messages/call log/voicemails?</span>" (Photograph this evidence).</li>
+                            <li>"Is there any doubt in your mind that it was [Suspect's Name] who contacted you?"</li>
+                        </ul>
+                        <h4>Evidence to Look For</h4>
+                        <ul>
+                            <li><span class="text-red-400 font-semibold">Confirmation of a valid, served order from dispatch.</span> This is the most critical piece of evidence.</li>
+                            <li>Digital evidence: Text messages, call logs, social media posts.</li>
+                            <li>Witnesses who saw the suspect at the prohibited location.</li>
+                            <li>Video surveillance showing the suspect.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Investigation: Crisis Intervention / Mental Health Call",
+                    content: `
+                        <p><strong>Goal:</strong> <span class="text-red-400 font-semibold">"Every consumer is a person."</span> The primary goal is the safety of everyone involved (the person, public, and officers) and connecting the person in crisis with the appropriate help. This is not a typical criminal investigation. (GO 512)</p>
+                        <h4>On Arrival: What to Look For & Anticipate</h4>
+                        <ul>
+                            <li><strong>Anticipate:</strong> Unpredictability. The person's reality may be different from yours. They may be scared, paranoid, or not understand you are there to help.</li>
+                            <li><strong>Look For (Person):</strong> Signs of self-harm (cuts, ligatures), access to weapons, signs of drug/alcohol use (paraphernalia, empty containers), extreme emotional distress, erratic behavior.</li>
+                            <li><strong>Look For (Scene):</strong> Environmental hazards (e.g., on a bridge, in traffic), notes or writings, medications (prescription or otherwise).</li>
+                        </ul>
+                        <h4>Investigative Questions / Dialogs (Focus on De-escalation)</h4>
+                        <p>Use a calm, slow, and quiet voice. Introduce yourself and explain you are there to help.</p>
+                        <ul>
+                            <li><strong>Initial Contact:</strong> "My name is Officer [Name]. I'm here to help. It looks like you're having a really tough time. Can you tell me your name?"</li>
+                            <li><strong>Active Listening:</strong> "Can you tell me what's going on right now? I'm listening." (Use minimal encouragers like "Okay," "I see").</li>
+                            <li><strong>Assessing Reality:</strong> "Are you seeing or hearing anything that's scaring you right now?"</li>
+                            <li><strong>Drug/Alcohol Use:</strong> "Have you taken any drugs or had anything to drink today? It's important for me to know so we can get you the right kind of help."</li>
+                            <li><strong class="text-red-400 font-semibold">Suicide Assessment (Ask Directly):</strong> "With everything that's going on, I have to ask: Are you thinking about hurting or killing yourself?" If yes: "Do you have a plan to do that?"</li>
+                            <li><strong class="text-yellow-300 font-semibold">Homicide Assessment (Ask Directly):</strong> "Are you thinking about hurting anyone else?"</li>
+                            <li><strong>Gathering History (if family/friends present):</strong> "Has this happened before? Is he/she on any medication? Is there a specific diagnosis we should know about?"</li>
+                        </ul>
+                        <h4>Key Actions & Documentation</h4>
+                        <ul>
+                            <li><span class="text-cyan-300">Request a CIRT unit</span> as soon as possible.</li>
+                            <li>Use time and distance. Slowing the situation down is a primary tactic.</li>
+                            <li>Determine if the person meets the criteria for an <span class="text-yellow-300 font-semibold">Emergency Detention Order (EDO)</span>: a substantial risk of serious harm to self or others.</li>
+                            <li><span class="text-cyan-300">Document Everything:</span> Your report should be highly detailed. Describe the person's behavior, their exact words, your de-escalation efforts, and the specific facts that led you to believe they met EDO criteria.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Investigation: Burglary of a Habitation",
+                    content: `
+                        <p><strong>Goal:</strong> Establish the elements of Burglary (entering a habitation without consent, with intent to commit a felony, theft, or assault). Document entry/exit points, stolen property, and evidence.</p>
+                        <h4>On Arrival/Initial Actions</h4>
+                        <ul>
+                            <li><span class="text-red-400 font-semibold">Officer safety is paramount.</span> If it's a burglary-in-progress, follow those procedures. If it's a past offense, clear the house to ensure no suspects are inside before letting the victim re-enter.</li>
+                            <li>Establish a single entry/exit path for yourself and the victim to avoid contaminating the scene.</li>
+                            <li>Request a Crime Scene Unit (CSU) if available and warranted.</li>
+                        </ul>
+                        <h4>Investigative Questions / Dialogs (Victim Interview)</h4>
+                        <ul>
+                             <li>"When did you leave the house and when did you return to find it like this?"</li>
+                            <li>"<span class="text-yellow-300 font-semibold">How did they get in?</span>" (Walk the exterior with the victim to find the point of entry - broken window, pried door, unlocked door).</li>
+                            <li>"Once inside, can you walk me through and show me what rooms they went into and what they disturbed?"</li>
+                            <li>"<span class="text-yellow-300 font-semibold">Do not touch anything as you show me.</span>"</li>
+                            <li>"What items are missing? Please start a detailed list with descriptions, serial numbers, and values."</li>
+                            <li>"Do you have any idea who might have done this? Any recent problems with anyone?"</li>
+                            <li>"Do you have any cameras inside or outside your home?"</li>
+                        </ul>
+                        <h4>Evidence to Look For</h4>
+                        <ul>
+                            <li><span class="text-cyan-300">Point of entry:</span> Pry marks, broken glass, footprints.</li>
+                            <li><span class="text-cyan-300">Interior:</span> Fingerprints on disturbed objects (jewelry boxes, drawers, electronics).</li>
+                            <li>DNA evidence: Blood, cigarette butts, bottles/cans left behind.</li>
+                            <li>Shoe prints inside the house.</li>
+                            <li>Neighborhood canvas for witnesses and video.</li>
+                        </ul>
+                    `
+                },
+                 {
+                    title: "Investigation: Robbery (Person)",
+                    content: `
+                        <p><strong>Goal:</strong> Establish the elements of Robbery (a theft committed by causing bodily injury or by threatening/placing another in fear of imminent bodily injury or death). Get a suspect description out FAST.</p>
+                        <h4>On Arrival/Initial Actions</h4>
+                        <ul>
+                            <li><span class="text-cyan-300">Render aid to the victim first.</span></li>
+                            <li><span class="text-red-400 font-semibold">Immediately get a suspect and vehicle description and direction of travel. Broadcast this information to other units ASAP.</span> This is the single most important initial action.</li>
+                            <li>Secure the scene.</li>
+                        </ul>
+                        <h4>Investigative Questions / Dialogs (Victim Interview)</h4>
+                        <ul>
+                            <li>"Are you okay? Do you need medical attention?"</li>
+                            <li>"Tell me exactly what happened."</li>
+                            <li>"<span class="text-yellow-300 font-semibold">What did they say to you? Did they have a weapon?</span>" (Establishes the "threat" or "force" element).</li>
+                            <li>"If they had a weapon, what did it look like? How were they holding it?"</li>
+                            <li>"Did they hurt you in any way? Where did they touch you?"</li>
+                            <li>"What did they take?"</li>
+                            <li>"<span class="text-red-400 font-semibold">Give me the best description you can of the suspect(s).</span> Race, sex, height, weight, hair, clothing, anything unique."</li>
+                            <li>"Did you see which way they went? Were they on foot or in a car?"</li>
+                        </ul>
+                        <h4>Evidence to Look For</h4>
+                        <ul>
+                            <li>The weapon, if discarded.</li>
+                            <li>Any items the suspect dropped.</li>
+                            <li>Video from the area.</li>
+                            <li>Fingerprints on any items the suspect may have touched.</li>
+                            <li>Injuries on the victim.</li>
+                        </ul>
+                    `
+                },
+                 {
+                    title: "Investigation: Unauthorized Use of a Motor Vehicle (UUMV)",
+                    content: `
+                        <p><strong>Goal:</strong> Establish the elements (intentionally or knowingly operating another's vehicle without the effective consent of the owner). Rule out civil issues.</p>
+                        <h4>On Arrival/Initial Actions</h4>
+                        <ul>
+                            <li>Get a full description of the vehicle (Year, Make, Model, Color, Plate, VIN if possible) and any distinguishing features (dents, stickers).</li>
+                            <li><span class="text-cyan-300">Immediately enter the vehicle as stolen in TLETS/NCIC.</span></li>
+                        </ul>
+                        <h4>Investigative Questions / Dialogs (Victim Interview)</h4>
+                        <ul>
+                            <li>"When and where did you last see your vehicle?"</li>
+                            <li>"When did you discover it was missing?"</li>
+                            <li>"Were the keys in the vehicle?"</li>
+                            <li><span class="text-yellow-300 font-semibold">"Is there anyone who might have borrowed the car or who has a spare key? A friend, ex-boyfriend/girlfriend, family member?"</span> (This helps rule out a civil "failure to return" situation).</li>
+                             <li>"<span class="text-yellow-300 font-semibold">Are you behind on your payments? Is it possible the vehicle was repossessed?</span>"</li>
+                            <li>"Do you have any tracking services on the vehicle, like OnStar or a GPS tracker?"</li>
+                             <li>"Can you provide me with the license plate and VIN from your insurance card or registration?"</li>
+                        </ul>
+                        <h4>Evidence to Look For</h4>
+                        <ul>
+                            <li>Broken glass or other signs of forced entry at the scene.</li>
+                            <li>Video from the location where it was parked.</li>
+                            <li>The vehicle itself (BOLO).</li>
+                            <li>When recovered, process the vehicle for fingerprints, DNA, and any items left by the suspect.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Investigation: Theft (General)",
+                    content: `
+                        <p><strong>Goal:</strong> Establish the elements of theft (unlawfully appropriating property with intent to deprive the owner) and document value for charging purposes.</p>
+                         <h4>On Arrival: What to Look For & Anticipate</h4>
+                        <ul>
+                            <li><strong>Anticipate:</strong> A non-emergency scene. The victim will likely be upset or frustrated. Your role is to be a calm, methodical fact-finder.</li>
+                            <li><strong>Look For:</strong> Signs of forced entry (if applicable, making it a burglary), the location where the item was last seen, and potential surveillance cameras in the area.</li>
+                        </ul>
+                        <h4>Investigative Questions / Dialogs (Victim Interview)</h4>
+                        <ul>
+                            <li><strong>The Basics:</strong> "I'm sorry this happened. Can you start by telling me what was stolen?"</li>
+                            <li><strong>Property Details:</strong> "Can you describe the item in as much detail as possible? Make, model, color, any unique marks or damage?"</li>
+                            <li>"<span class="text-red-400 font-semibold">Do you have a serial number for it?</span>" (This is the most critical question for recovering property).</li>
+                            <li>"What would you say is the fair market value of the item today? Do you have a receipt?"</li>
+                             <li><strong>Timeline:</strong> "Okay, let's establish a timeline. When and where did you last physically see the item?" and "What time did you discover it was missing?"</li>
+                            <li><strong>Suspect Info / Solvability:</strong> "Who had access to the area where the item was?" "Did you have any visitors, workers, or guests recently?" "Do you have any idea at all who might have taken it?" "Do you or any of your neighbors have security cameras that might cover the area?"</li>
+                        </ul>
+                         <h4>Evidence to Look For & Document</h4>
+                        <ul>
+                            <li><span class="text-cyan-300">Serial numbers are #1.</span></li>
+                            <li>Proof of ownership and value (receipts).</li>
+                            <li>Surveillance video from the victim or neighbors.</li>
+                            <li>Witnesses who may have seen something suspicious.</li>
+                            <li>Fingerprints, if the scene warrants it and the surface is viable.</li>
+                        </ul>
+                    `
+                }
+            ];
+
+            const radioPracticeData = [
+                {
+                    title: "Practice Scenarios: Running Persons",
+                    content: `
+                        <p>Use these scenarios to practice relaying information and spelling names phonetically.</p>
+                        <h4>Scenario 1: Traffic Stop</h4>
+                        <ul>
+                            <li><strong>Name:</strong> Michael Johnson</li>
+                            <li><strong>DOB:</strong> 04/15/1988</li>
+                            <li><strong>Race/Sex:</strong> White/Male</li>
+                            <li><strong>Address:</strong> 123 Oak St, Denton, TX</li>
+                            <li><strong>Phonetic Spelling:</strong> Last name Johnson, J-John, O-Ocean, H-Henry, N-Nora, S-Sam, O-Ocean, N-Nora. First name Michael, M-Mary, I-Ida, C-Charles, H-Henry, A-Adam, E-Edward, L-Lincoln.</li>
+                        </ul>
+                        <h4>Scenario 2: Suspicious Person</h4>
+                        <ul>
+                            <li><strong>Name:</strong> Alejandra Rodriguez-Garcia</li>
+                            <li><strong>DOB:</strong> 11/22/2001</li>
+                            <li><strong>Race/Sex:</strong> Hispanic/Female</li>
+                            <li><strong>Address:</strong> 456 Elm Ave, Apt 2B, Krum, TX</li>
+                            <li><strong>Phonetic Spelling:</strong> Last name Rodriguez, R-Robert, O-Ocean, D-David, R-Robert, I-Ida, G-George, U-Union, E-Edward, Z-Zebra. First name Alejandra, A-Adam, L-Lincoln, E-Edward, J-John, A-Adam, N-Nora, D-David, R-Robert, A-Adam.</li>
+                        </ul>
+                         <h4>Scenario 3: Field Interview</h4>
+                        <ul>
+                            <li><strong>Name:</strong> DeShawn Washington</li>
+                            <li><strong>DOB:</strong> 08/01/1995</li>
+                            <li><strong>Race/Sex:</strong> Black/Male</li>
+                            <li><strong>Address:</strong> 789 Pine Ln, Sanger, TX</li>
+                            <li><strong>Phonetic Spelling:</strong> Last name Washington, W-William, A-Adam, S-Sam, H-Henry, I-Ida, N-Nora, G-George, T-Tom, O-Ocean, N-Nora. First name DeShawn, D-David, E-Edward, S-Sam, H-Henry, A-Adam, W-William, N-Nora.</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Comprehensive Radio Verbiage & Requests",
+                    content: `
+                        <p>This is a list of common requests and statements to make to dispatch. Replace bracketed info with your specific details.</p>
+                        <h4>Routine Status & Location</h4>
+                        <ul>
+                            <li>"Denton, [Unit#], show me 10-8." (In service)</li>
+                            <li>"Denton, [Unit#], show me 10-7 for a meal break at [location]." (Out of service)</li>
+                            <li>"Denton, [Unit#], I'll be on a foot patrol at [location/area]."</li>
+                            <li>"Denton, [Unit#], show me 10-19." (Returning to station)</li>
+                            <li>"Denton, [Unit#], what's my 10-20?" (What is my location?)</li>
+                        </ul>
+                        <h4>Initiating Contact & Stops</h4>
+                        <ul>
+                            <li>"Denton, [Unit#], traffic stop on a [color/make vehicle], Texas plate [plate phonetically], at [location]."</li>
+                            <li>"Denton, [Unit#], I'll be out at [address] on a follow-up."</li>
+                             <li>"Denton, [Unit#], show me out with one at [location]." (Used for suspicious persons, etc.)</li>
+                        </ul>
+                        <h4>Information Requests (Running Checks)</h4>
+                        <ul>
+                            <li>"Denton, can you run this Texas OLN for a 27 and 29?" (Check license status and wants/warrants)</li>
+                            <li>"Denton, run [Name, DOB] for a 29, Denton County and statewide."</li>
+                            <li>"Denton, can you run this VIN for a 10-28 and see if it's 10-50?" (Check registration and if it's stolen)</li>
+                            <li>"Denton, can you check call history for [address]?"</li>
+                        </ul>
+                         <h4>Resource & Support Requests</h4>
+                        <ul>
+                            <li>"Denton, can you start me another unit, non-emergency?"</li>
+                            <li>"Denton, can you start me a supervisor to this scene?"</li>
+                            <li>"Denton, can you start a CIRT unit to my location?"</li>
+                            <li>"Denton, is there a Spanish-speaking officer available?"</li>
+                            <li>"Denton, start a non-preference wrecker for a [vehicle type] to my location."</li>
+                            <li>"Denton, have EMS en route for a [type of injury/complaint]."</li>
+                            <li>"Denton, get me a callback number for the RP on this call."</li>
+                        </ul>
+                        <h4>On-Scene & Tactical Updates</h4>
+                        <ul>
+                            <li>"[Unit#], 10-97. Scene is Code 4." (Arrived, situation is stable/safe).</li>
+                            <li>"Denton, I have one at gunpoint at [address]."</li>
+                            <li><strong class="text-red-400 font-semibold">"SHOTS FIRED, SHOTS FIRED! [Location], suspect is a [description]!"</strong></li>
+                            <li>"Denton, suspect is fleeing on foot, last seen [direction] from [location]. Description is [description]."</li>
+                             <li>"Denton, I'm in pursuit of a [Vehicle Description], northbound on [Street] passing [Cross-street]."</li>
+                        </ul>
+                        <h4>Concluding Calls</h4>
+                        <ul>
+                             <li>"Denton, [Unit#], show one in custody, en route to jail. Starting mileage is [mileage]."</li>
+                            <li>"Denton, [Unit#], arriving at the jail. Ending mileage is [mileage]."</li>
+                            <li>"Denton, all units can disregard, suspect in custody."</li>
+                            <li>"Denton, you can show this call cleared, report to follow."</li>
+                            <li>"Denton, [Unit#], clear me from this call, I'm 10-8." (In service)</li>
+                        </ul>
+                    `
+                }
+            ];
             
             // --- DOM Elements ---
             const checklistContainer = document.getElementById('checklist-container');
@@ -711,21 +1302,32 @@
             const proceduresContainer = document.getElementById('procedures-container');
             const cuesContainer = document.getElementById('cues-container');
             const commandsContainer = document.getElementById('commands-container');
+            const dialogsContainer = document.getElementById('dialogs-container');
+            const investigationContainer = document.getElementById('investigation-container');
+            const radioContainer = document.getElementById('radio-container');
+
             const resetBtn = document.getElementById('resetChecklist');
-            const searchGuideInput = document.getElementById('searchGuide');
-            const searchProceduresInput = document.getElementById('searchProcedures');
-            const searchCuesInput = document.getElementById('searchCues');
-            const searchCommandsInput = document.getElementById('searchCommands');
-            const checklistTab = document.getElementById('checklist-tab');
-            const guideTab = document.getElementById('guide-tab');
-            const proceduresTab = document.getElementById('procedures-tab');
-            const cuesTab = document.getElementById('cues-tab');
-            const commandsTab = document.getElementById('commands-tab');
-            const checklistPanel = document.getElementById('checklist');
-            const guidePanel = document.getElementById('guide');
-            const proceduresPanel = document.getElementById('procedures');
-            const cuesPanel = document.getElementById('cues');
-            const commandsPanel = document.getElementById('commands');
+            
+            const tabs = {
+                checklist: document.getElementById('checklist-tab'),
+                guide: document.getElementById('guide-tab'),
+                procedures: document.getElementById('procedures-tab'),
+                cues: document.getElementById('cues-tab'),
+                commands: document.getElementById('commands-tab'),
+                dialogs: document.getElementById('dialogs-tab'),
+                investigation: document.getElementById('investigation-tab'),
+                radio: document.getElementById('radio-tab')
+            };
+            const panels = {
+                checklist: document.getElementById('checklist'),
+                guide: document.getElementById('guide'),
+                procedures: document.getElementById('procedures'),
+                cues: document.getElementById('cues'),
+                commands: document.getElementById('commands'),
+                dialogs: document.getElementById('dialogs'),
+                investigation: document.getElementById('investigation'),
+                radio: document.getElementById('radio')
+            };
 
             // --- Functions ---
             function renderChecklist() {
@@ -817,9 +1419,6 @@
             }
 
             function switchTab(activeTab) {
-                const tabs = { checklist: checklistTab, guide: guideTab, procedures: proceduresTab, cues: cuesTab, commands: commandsTab };
-                const panels = { checklist: checklistPanel, guide: guidePanel, procedures: proceduresPanel, cues: cuesPanel, commands: commandsPanel };
-
                 for (const tabName in tabs) {
                     const tab = tabs[tabName];
                     const panel = panels[tabName];
@@ -838,16 +1437,28 @@
 
             // --- Event Listeners ---
             resetBtn.addEventListener('click', resetChecklist);
-            searchGuideInput.addEventListener('input', (e) => renderContent(guideContainer, guideData, e.target.value));
-            searchProceduresInput.addEventListener('input', (e) => renderContent(proceduresContainer, proceduresData, e.target.value));
-            searchCuesInput.addEventListener('input', (e) => renderContent(cuesContainer, cuesData, e.target.value));
-            searchCommandsInput.addEventListener('input', (e) => renderContent(commandsContainer, verbalCommandsData, e.target.value));
             
-            checklistTab.addEventListener('click', () => switchTab('checklist'));
-            guideTab.addEventListener('click', () => switchTab('guide'));
-            proceduresTab.addEventListener('click', () => switchTab('procedures'));
-            cuesTab.addEventListener('click', () => switchTab('cues'));
-            commandsTab.addEventListener('click', () => switchTab('commands'));
+            document.querySelectorAll('input[type="text"][id^="search"]').forEach(input => {
+                const containerId = input.id.replace('search', '').toLowerCase() + 'Container';
+                const dataMap = {
+                    'guideContainer': guideData,
+                    'proceduresContainer': proceduresData,
+                    'cuesContainer': cuesData,
+                    'commandsContainer': verbalCommandsData,
+                    'dialogsContainer': dialogsData,
+                    'investigationContainer': investigationData,
+                    'radioContainer': radioPracticeData
+                };
+                const containerEl = document.getElementById(containerId);
+                if (containerEl && dataMap[containerId]) {
+                    input.addEventListener('input', (e) => renderContent(containerEl, dataMap[containerId], e.target.value));
+                }
+            });
+            
+            for (const tabName in tabs) {
+                tabs[tabName].addEventListener('click', () => switchTab(tabName));
+            }
+            
 
             // --- Initial Render ---
             renderChecklist();
@@ -855,8 +1466,12 @@
             renderContent(proceduresContainer, proceduresData);
             renderContent(cuesContainer, cuesData);
             renderContent(commandsContainer, verbalCommandsData);
+            renderContent(dialogsContainer, dialogsData);
+            renderContent(investigationContainer, investigationData);
+            renderContent(radioContainer, radioPracticeData);
             switchTab('checklist'); // Start on checklist tab
         });
     </script>
 </body>
 </html>
+
